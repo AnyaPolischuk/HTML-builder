@@ -39,6 +39,7 @@ function addTemplate() {
    fs.readFile(pathOfTemplate, 'utf-8', (err, content) => { //содержимое файла template.html
         if (err) console.log(err);
         //console.log(typeof data)
+       
 
         //смотрим содержимое папки components
         fs.readdir(pathOfComponents, {withFileTypes: true}, (error, files) => {
@@ -47,29 +48,6 @@ function addTemplate() {
                     let pathOfComponentsFile =  path.join(__dirname, 'components', file.name);
                     let indexOfDot = file.name.indexOf('.');
                     let nameWithoutDot = file.name.slice(0, indexOfDot);
-                    //console.log(nameWithoutDot);
-                    //console.log(pathOfComponentsFile)
-
-
-                    // let input2 = fs.createReadStream(pathOfComponentsFile, 'utf-8');
-
-                    // input2.on('data', (chuck) => {
-                        
-                        
-                    //     content = content.replace(`{{${nameWithoutDot}}}`, chuck);
-
-                       
-                    //     //console.log(newText)
-                    //     //console.log('uhdguihrtguit' + content)
-                    //     //console.log(chuck)
-                    //    // console.log(`{{${nameWithoutDot}}}`)
-                      
-                    //    output2.write(content);
-                       
-                    //    //output2.write('');
-                    //    //output2.write(content.replace(`{{${nameWithoutDot}}}`, chuck))
-                    // });
-                    
 
                     fs.writeFile(pathOfNewHTML, '', (err) => {
                         if (err) console.log(err);
@@ -78,8 +56,10 @@ function addTemplate() {
                     //читаем содержимое каждой из components
                     fs.readFile(pathOfComponentsFile, 'utf-8', (err, text) => {
                         if (err) console.log(err);
-                        //console.log(text);
-                        
+
+                        fs.writeFile(pathOfNewHTML, '', (err) => {
+                            if (err) console.log(err);
+                        })
 
                         content = content.replace(`{{${nameWithoutDot}}}`, text);
                         
@@ -111,40 +91,6 @@ function createFile() {
 
                 //создаем копии папок внутри assets
                 fs.promises.mkdir(pathOfCopiedFile, {recursive: true});
-                
-                // fs.readdir(pathOfFile, {withFileTypes: true}, (err, curfiles) => {
-                    
-                //     if (!err) {
-                //         curfiles.forEach((curfile) => {
-                          
-
-                //             pathOfCurFile = path.join(pathOfFile, curfile.name);
-                //             pathOfCurCopiedFile = path.join(pathOfCopiedFile, curfile.name);
-                //             //console.log(pathOfCurFile)
-                //             fs.copyFile(pathOfCurFile, pathOfCurCopiedFile, (err) => {
-                //                 if (err) console.log(err);
-                //             })
-                //         })
-                //     }
-                // })
-
-
-
-
-                // fs.readdir(pathOfFile, {recursive: true}, (err, curfiles) => {
-                //     if (!err) {
-                //         curfiles.forEach((curfile) => {
-                //             pathOfCurFile = path.join(pathOfFile, curfile.name);
-                //             console.log(curfile.name)
-                        //     pathOfCopiedFile = path.join(__dirname, 'project-dist', file.name, curfile.name);
-
-                        //     fs.copyFile(pathOfCurFile, pathOfCopiedFile, (err) => {
-                        //         if (err) console.log(err);
-                        // });
-                       // })
-                        
-                   // }
-               // })
             })
         }
         else {
@@ -152,7 +98,7 @@ function createFile() {
           }
     })
 }
-createFile()
+createFile();
 
 
 function copyFile() {
@@ -160,15 +106,12 @@ function copyFile() {
     files.forEach(file => {
         let pathOfNewFile = path.join(__dirname, 'project-dist', 'assets', file.name);
         let pathOfFile = path.join(__dirname, 'assets', file.name);
-        //console.log(pathOfFile)
-        //console.log(pathOfNewFile)
 
         fs.readdir(pathOfFile, {withFileTypes: true}, (err, files2) => {
             files2.forEach(file2 => {
                 let pathOfFile2 = path.join(pathOfFile, file2.name);
                 let pathOfNewFile2 = path.join(pathOfNewFile, file2.name);
-                // console.log(pathOfFile2)
-                // console.log(pathOfNewFile2)
+
                 fs.copyFile(pathOfFile2, pathOfNewFile2, (err) => {
                  if (err) console.log(err);
               })
@@ -179,4 +122,4 @@ function copyFile() {
 }
 
 
-copyFile()
+copyFile();
